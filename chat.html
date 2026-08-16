@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주파수 · 채팅</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- 사이드바: 대화방 목록 -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div>
+        <div class="sidebar-title brand">📡 주파수</div>
+        <div class="me-row">
+          <span class="pulse-dot"></span>
+          <span id="meNickname"></span>
+          <span id="meUsername" style="color:var(--ink-soft)"></span>
+        </div>
+      </div>
+      <button class="icon-btn" id="inviteBtn" title="새 대화 시작">＋</button>
+    </div>
+
+    <div class="room-list" id="roomList">
+      <div class="empty-note">불러오는 중...</div>
+    </div>
+
+    <div class="logout-row">
+      <button class="logout-btn" id="logoutBtn">로그아웃</button>
+    </div>
+  </div>
+
+  <!-- 채팅창 -->
+  <div class="chat-pane">
+    <div class="chat-pane-empty" id="chatPaneEmpty">
+      <div style="font-size:32px;">📡</div>
+      <div>왼쪽에서 대화방을 선택하거나<br>＋ 버튼으로 새 대화를 시작하세요</div>
+    </div>
+
+    <div id="chatActive" class="hidden" style="display:flex;flex-direction:column;height:100%;">
+      <div class="chat-header">
+        <button class="icon-btn back-btn" id="backBtn">←</button>
+        <div>
+          <div class="room-name" id="chatRoomName"></div>
+          <div class="status"><span class="pulse-dot"></span> 실시간 연결됨</div>
+        </div>
+      </div>
+
+      <div class="messages" id="messages"></div>
+
+      <div class="composer">
+        <input type="text" id="messageInput" placeholder="메시지를 입력하세요" autocomplete="off">
+        <button class="send-btn" id="sendBtn">➤</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 초대 모달 -->
+<div class="modal-backdrop hidden" id="inviteModal">
+  <div class="modal">
+    <h3 class="brand">새 대화 시작</h3>
+    <p>상대방의 아이디를 입력하면 대화방이 만들어져요.</p>
+    <div class="auth-error" id="inviteError"></div>
+    <div class="field">
+      <label>상대방 아이디</label>
+      <input type="text" id="inviteUsername" placeholder="예: yuna">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelInvite">취소</button>
+      <button class="btn-primary" id="confirmInvite">대화 시작</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/chat.js"></script>
+</body>
+</html>
