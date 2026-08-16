@@ -13,7 +13,7 @@ const PALETTES = [
   { name: '미드나잇', background: '#1B1F22', panel: '#242A2E', accent: '#5CC9FF' }
 ];
 
-const DEFAULT_LIGHT = PALETTES[0];
+const DEFAULT_LIGHT = { background: '#E7F3FB', panel: '#FFFFFF', accent: '#F5D467' };
 const DEFAULT_DARK = PALETTES[5];
 
 function loadThemeState() {
