@@ -23,6 +23,8 @@
         </div>
       </div>
       <div class="header-actions">
+        <button class="icon-btn hidden" id="adminBtn" title="관리자">🛡</button>
+        <button class="icon-btn" id="settingsBtn" title="계정 설정">⚙</button>
         <button class="icon-btn theme-swatch" id="themeBtn" title="테마 설정"></button>
         <button class="icon-btn" id="inviteBtn" title="새 대화 시작">＋</button>
       </div>
@@ -56,9 +58,12 @@
       <div class="messages" id="messages"></div>
 
       <div class="composer">
+        <input type="file" id="imageInput" accept="image/*" class="hidden">
+        <button class="icon-btn" id="attachBtn" title="사진 첨부">🖼</button>
         <input type="text" id="messageInput" placeholder="메시지를 입력하세요" autocomplete="off">
         <button class="send-btn" id="sendBtn">➤</button>
       </div>
+      <div class="upload-progress hidden" id="uploadProgress">사진 업로드 중...</div>
     </div>
   </div>
 
@@ -77,6 +82,69 @@
     <div class="modal-actions">
       <button class="btn-secondary" id="cancelInvite">취소</button>
       <button class="btn-primary" id="confirmInvite">대화 시작</button>
+    </div>
+  </div>
+</div>
+
+<!-- 계정 설정 모달 -->
+<div class="modal-backdrop hidden" id="settingsModal">
+  <div class="modal">
+    <h3 class="brand">계정 설정</h3>
+    <p>닉네임을 바꾸거나 알림을 켤 수 있어요.</p>
+
+    <div class="auth-error" id="settingsError"></div>
+    <div class="auth-notice hidden" id="settingsNotice"></div>
+
+    <div class="field">
+      <label>닉네임</label>
+      <input type="text" id="settingsNickname" placeholder="상대에게 보일 이름">
+    </div>
+    <button class="btn-primary" id="saveNicknameBtn" style="margin-bottom:18px;">닉네임 저장</button>
+
+    <div class="theme-section">
+      <div class="theme-section-label">알림</div>
+      <div class="dark-toggle-row">
+        <span id="notifStatusLabel">기기 알림 꺼짐</span>
+        <button class="btn-secondary" id="enableNotifBtn" style="flex:none; padding:8px 12px; font-size:12.5px;">켜기</button>
+      </div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-section-label">위험 구역</div>
+      <button class="danger-link" id="openWithdrawBtn">계정 탈퇴</button>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary" id="closeSettings" style="margin-top:0;">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 계정 탈퇴 확인 모달 -->
+<div class="modal-backdrop hidden" id="withdrawModal">
+  <div class="modal">
+    <h3 class="brand">계정 탈퇴</h3>
+    <p>탈퇴하면 로그인 정보와 프로필이 삭제돼요. 대화 상대에게는 "탈퇴한 사용자"로 표시되고 대화 내용은 상대방 화면에 그대로 남아요. 이 작업은 되돌릴 수 없어요.</p>
+    <div class="auth-error" id="withdrawError"></div>
+    <div class="field">
+      <label>본인 확인을 위해 비밀번호를 입력하세요</label>
+      <input type="password" id="withdrawPassword" autocomplete="current-password" placeholder="비밀번호">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="cancelWithdraw">취소</button>
+      <button class="btn-primary danger-btn" id="confirmWithdraw">탈퇴하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 관리자 모달 -->
+<div class="modal-backdrop hidden" id="adminModal">
+  <div class="modal admin-modal">
+    <h3 class="brand">관리자 · 전체 사용자</h3>
+    <p>가입한 모든 사용자의 최근 로그인 기록이에요.</p>
+    <div id="adminUserList" class="admin-user-list">불러오는 중...</div>
+    <div class="modal-actions">
+      <button class="btn-primary" id="closeAdmin" style="margin-top:0;">닫기</button>
     </div>
   </div>
 </div>
@@ -127,6 +195,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 <script src="js/chat.js"></script>
 </body>
