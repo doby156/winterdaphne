@@ -1,17 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 
 :root{
+  /* 기본(코랄) 팔레트 — 아래 값들은 테마 설정에서 실시간으로 바뀝니다 */
   --paper:#EEF1F0;
-  --paper-raised:#FFFFFF;
-  --ink:#1C2530;
-  --ink-soft:#5B6672;
-  --line:#D8DEDA;
-  --signal:#FF6B4A;
-  --signal-dark:#E5553A;
-  --mint:#DCEEE8;
+  --card:#FFFFFF;
+  --border-color:#1C2530;
+  --accent:#FF6B4A;
+  --dot-color: rgba(28,37,48,0.14);
+
+  /* 대비를 자동 계산해서 넣는 값들 (JS가 채워줌) */
+  --page-ink:#1C2530;
+  --page-ink-soft:#5B6672;
+  --card-ink:#1C2530;
+  --card-ink-soft:#5B6672;
+  --accent-ink:#FFFFFF;
+
+  --tint-1: color-mix(in srgb, var(--accent) 12%, var(--card));
+  --tint-2: color-mix(in srgb, var(--accent) 22%, var(--card));
   --online:#34C77B;
   --danger:#E5553A;
-  --radius:14px;
   --shadow: 0 2px 10px rgba(28,37,48,0.06);
 }
 
@@ -19,10 +26,13 @@
 html,body{height:100%;}
 body{
   margin:0;
-  background:var(--paper);
-  color:var(--ink);
+  background:
+    radial-gradient(circle at 1px 1px, var(--dot-color) 1.6px, transparent 1.6px) 0 0/24px 24px,
+    var(--paper);
+  color:var(--page-ink);
   font-family:'IBM Plex Sans', sans-serif;
   -webkit-font-smoothing:antialiased;
+  transition:background-color .2s ease, color .2s ease;
 }
 
 .brand{
@@ -52,22 +62,24 @@ body{
   align-items:center;
   justify-content:center;
   padding:24px;
+  position:relative;
 }
 .auth-card{
   width:100%;
   max-width:380px;
-  background:var(--paper-raised);
+  background:var(--card);
+  color:var(--card-ink);
   border-radius:20px;
   box-shadow:var(--shadow);
   padding:40px 32px;
-  border:1px solid var(--line);
+  border:1px solid color-mix(in srgb, var(--card-ink) 12%, transparent);
 }
 .auth-logo{
   font-size:28px;
   margin-bottom:4px;
 }
 .auth-sub{
-  color:var(--ink-soft);
+  color:var(--card-ink-soft);
   font-size:13px;
   margin-bottom:28px;
   letter-spacing:0.01em;
@@ -78,7 +90,7 @@ body{
 .field label{
   display:block;
   font-size:12px;
-  color:var(--ink-soft);
+  color:var(--card-ink-soft);
   margin-bottom:6px;
   font-weight:500;
 }
@@ -86,32 +98,32 @@ body{
   width:100%;
   padding:12px 14px;
   border-radius:10px;
-  border:1px solid var(--line);
-  background:var(--paper);
+  border:1px solid color-mix(in srgb, var(--card-ink) 16%, transparent);
+  background:var(--tint-1);
   font-size:14px;
   font-family:inherit;
-  color:var(--ink);
+  color:var(--card-ink);
   outline:none;
   transition:border-color .15s ease;
 }
 .field input:focus{
-  border-color:var(--signal);
+  border-color:var(--accent);
 }
 .btn-primary{
   width:100%;
   padding:13px;
   border-radius:10px;
   border:none;
-  background:var(--signal);
-  color:#fff;
+  background:var(--accent);
+  color:var(--accent-ink);
   font-size:14px;
   font-weight:600;
   font-family:inherit;
   cursor:pointer;
   margin-top:6px;
-  transition:background .15s ease, transform .1s ease;
+  transition:filter .15s ease, transform .1s ease;
 }
-.btn-primary:hover{background:var(--signal-dark);}
+.btn-primary:hover{filter:brightness(0.93);}
 .btn-primary:active{transform:scale(0.98);}
 .btn-primary:disabled{opacity:0.6;cursor:not-allowed;}
 
@@ -119,10 +131,10 @@ body{
   text-align:center;
   margin-top:20px;
   font-size:13px;
-  color:var(--ink-soft);
+  color:var(--card-ink-soft);
 }
 .switch-line a{
-  color:var(--signal);
+  color:var(--accent);
   font-weight:600;
   text-decoration:none;
   cursor:pointer;
@@ -149,8 +161,9 @@ body{
 .sidebar{
   width:300px;
   min-width:260px;
-  background:var(--paper-raised);
-  border-right:1px solid var(--line);
+  background:var(--card);
+  color:var(--card-ink);
+  border-right:1px solid color-mix(in srgb, var(--card-ink) 12%, transparent);
   display:flex;
   flex-direction:column;
 }
@@ -159,7 +172,8 @@ body{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  border-bottom:1px solid var(--line);
+  border-bottom:1px solid color-mix(in srgb, var(--card-ink) 12%, transparent);
+  gap:8px;
 }
 .sidebar-title{font-size:19px;}
 .me-row{
@@ -167,20 +181,23 @@ body{
   align-items:center;
   gap:8px;
   font-size:12.5px;
-  color:var(--ink-soft);
+  color:var(--card-ink-soft);
+  flex-wrap:wrap;
 }
+.header-actions{display:flex; gap:6px; flex-shrink:0;}
 .icon-btn{
   width:34px;height:34px;
   border-radius:50%;
-  border:1px solid var(--line);
-  background:var(--paper);
+  border:1px solid color-mix(in srgb, var(--card-ink) 16%, transparent);
+  background:var(--tint-1);
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;
-  font-size:18px;
-  color:var(--ink);
+  font-size:16px;
+  color:var(--card-ink);
   transition:background .15s ease;
+  flex-shrink:0;
 }
-.icon-btn:hover{background:var(--mint);}
+.icon-btn:hover{background:var(--tint-2);}
 
 .room-list{
   flex:1;
@@ -196,13 +213,13 @@ body{
   cursor:pointer;
   transition:background .15s ease;
 }
-.room-item:hover{background:var(--paper);}
-.room-item.active{background:var(--mint);}
+.room-item:hover{background:var(--tint-1);}
+.room-item.active{background:var(--tint-2);}
 .avatar{
   width:40px;height:40px;
   border-radius:50%;
-  background:var(--signal);
-  color:#fff;
+  background:var(--accent);
+  color:var(--accent-ink);
   display:flex;align-items:center;justify-content:center;
   font-weight:600;
   font-size:15px;
@@ -210,9 +227,9 @@ body{
 }
 .room-meta{overflow:hidden;flex:1;}
 .room-name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.room-last{font-size:12px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.room-last{font-size:12px;color:var(--card-ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .empty-note{
-  color:var(--ink-soft);
+  color:var(--card-ink-soft);
   font-size:13px;
   text-align:center;
   padding:30px 16px;
@@ -221,34 +238,33 @@ body{
 
 .logout-row{
   padding:14px 18px;
-  border-top:1px solid var(--line);
+  border-top:1px solid color-mix(in srgb, var(--card-ink) 12%, transparent);
 }
 .logout-btn{
   width:100%;
   background:none;
-  border:1px solid var(--line);
+  border:1px solid color-mix(in srgb, var(--card-ink) 16%, transparent);
   padding:9px;
   border-radius:9px;
-  color:var(--ink-soft);
+  color:var(--card-ink-soft);
   font-size:12.5px;
   cursor:pointer;
   font-family:inherit;
 }
-.logout-btn:hover{background:var(--paper);}
+.logout-btn:hover{background:var(--tint-1);}
 
 /* -------- 채팅창 -------- */
 .chat-pane{
   flex:1;
   display:flex;
   flex-direction:column;
-  background:var(--paper);
 }
 .chat-pane-empty{
   flex:1;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:var(--ink-soft);
+  color:var(--page-ink-soft);
   font-size:14px;
   text-align:center;
   flex-direction:column;
@@ -256,14 +272,15 @@ body{
 }
 .chat-header{
   padding:16px 22px;
-  background:var(--paper-raised);
-  border-bottom:1px solid var(--line);
+  background:var(--card);
+  color:var(--card-ink);
+  border-bottom:1px solid color-mix(in srgb, var(--card-ink) 12%, transparent);
   display:flex;
   align-items:center;
   gap:12px;
 }
 .chat-header .room-name{font-size:15px;}
-.chat-header .status{font-size:12px;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+.chat-header .status{font-size:12px;color:var(--card-ink-soft);display:flex;align-items:center;gap:6px;}
 
 .messages{
   flex:1;
@@ -276,7 +293,7 @@ body{
 .day-divider{
   text-align:center;
   font-size:11px;
-  color:var(--ink-soft);
+  color:var(--page-ink-soft);
   margin:18px 0 10px;
   position:relative;
 }
@@ -286,7 +303,7 @@ body{
   top:50%;
   width:38%;
   height:1px;
-  background:repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
+  background:repeating-linear-gradient(90deg, color-mix(in srgb, var(--page-ink) 18%, transparent) 0 4px, transparent 4px 8px);
 }
 .day-divider::before{left:0;}
 .day-divider::after{right:0;}
@@ -307,26 +324,26 @@ body{
   box-shadow:var(--shadow);
 }
 .msg-row.mine .bubble{
-  background:var(--signal);
-  color:#fff;
+  background:var(--accent);
+  color:var(--accent-ink);
   border-bottom-right-radius:4px;
 }
 .msg-row.theirs .bubble{
-  background:var(--paper-raised);
-  color:var(--ink);
-  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--card-ink);
+  border:1px solid color-mix(in srgb, var(--card-ink) 12%, transparent);
   border-bottom-left-radius:4px;
 }
 .msg-time{
   font-size:10.5px;
-  color:var(--ink-soft);
+  color:var(--page-ink-soft);
   align-self:flex-end;
   margin:0 8px;
   white-space:nowrap;
 }
 .sender-name{
   font-size:11.5px;
-  color:var(--ink-soft);
+  color:var(--page-ink-soft);
   margin:0 0 2px 4px;
 }
 
@@ -335,64 +352,164 @@ body{
   align-items:center;
   gap:10px;
   padding:16px 18px;
-  background:var(--paper-raised);
-  border-top:1px solid var(--line);
+  background:var(--card);
+  border-top:1px solid color-mix(in srgb, var(--card-ink) 12%, transparent);
 }
 .composer input{
   flex:1;
   padding:12px 16px;
   border-radius:22px;
-  border:1px solid var(--line);
-  background:var(--paper);
+  border:1px solid color-mix(in srgb, var(--card-ink) 16%, transparent);
+  background:var(--tint-1);
+  color:var(--card-ink);
   font-size:14px;
   font-family:inherit;
   outline:none;
 }
-.composer input:focus{border-color:var(--signal);}
+.composer input:focus{border-color:var(--accent);}
 .send-btn{
   width:44px;height:44px;
   border-radius:50%;
   border:none;
-  background:var(--signal);
-  color:#fff;
+  background:var(--accent);
+  color:var(--accent-ink);
   font-size:18px;
   cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
-  transition:background .15s ease, transform .1s ease;
+  transition:filter .15s ease, transform .1s ease;
 }
-.send-btn:hover{background:var(--signal-dark);}
+.send-btn:hover{filter:brightness(0.93);}
 .send-btn:active{transform:scale(0.94);}
 
-/* -------- 초대 모달 -------- */
+/* -------- 모달 공통 (초대 / 테마 설정) -------- */
 .modal-backdrop{
   position:fixed;inset:0;
-  background:rgba(28,37,48,0.35);
+  background:rgba(15,18,20,0.4);
   display:flex;align-items:center;justify-content:center;
   z-index:50;
+  padding:20px;
 }
 .modal{
-  background:var(--paper-raised);
+  background:var(--card);
+  color:var(--card-ink);
   border-radius:16px;
   padding:26px 24px;
   width:100%;
-  max-width:340px;
-  box-shadow:0 8px 30px rgba(28,37,48,0.2);
+  max-width:360px;
+  max-height:88vh;
+  overflow-y:auto;
+  box-shadow:0 8px 30px rgba(0,0,0,0.25);
 }
 .modal h3{margin:0 0 4px;font-family:'Fraunces',serif;font-weight:600;}
-.modal p{margin:0 0 16px;font-size:12.5px;color:var(--ink-soft);}
+.modal p{margin:0 0 16px;font-size:12.5px;color:var(--card-ink-soft);}
 .modal-actions{display:flex;gap:8px;margin-top:16px;}
 .btn-secondary{
   flex:1;
   padding:11px;
   border-radius:10px;
-  border:1px solid var(--line);
+  border:1px solid color-mix(in srgb, var(--card-ink) 16%, transparent);
   background:none;
-  color:var(--ink-soft);
+  color:var(--card-ink-soft);
   font-family:inherit;
   cursor:pointer;
 }
 .modal .btn-primary{margin-top:0;flex:1;}
+
+/* -------- 테마 설정 모달 -------- */
+.theme-section{margin-bottom:18px;}
+.theme-section:last-of-type{margin-bottom:0;}
+.theme-section-label{
+  font-size:11.5px;
+  font-weight:600;
+  color:var(--card-ink-soft);
+  letter-spacing:.02em;
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+.dark-toggle-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 12px;
+  background:var(--tint-1);
+  border-radius:10px;
+  font-size:13.5px;
+}
+.switch{
+  position:relative;
+  width:42px;height:24px;
+  flex-shrink:0;
+}
+.switch input{opacity:0;width:0;height:0;}
+.switch-track{
+  position:absolute;inset:0;
+  background:color-mix(in srgb, var(--card-ink) 22%, transparent);
+  border-radius:999px;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+.switch-track::before{
+  content:"";
+  position:absolute;
+  width:18px;height:18px;
+  left:3px;top:3px;
+  background:#fff;
+  border-radius:50%;
+  transition:transform .15s ease;
+}
+.switch input:checked + .switch-track{background:var(--accent);}
+.switch input:checked + .switch-track::before{transform:translateX(18px);}
+
+.palette-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+}
+.palette-swatch{
+  border:2px solid transparent;
+  border-radius:12px;
+  padding:10px 6px 8px;
+  cursor:pointer;
+  background:var(--tint-1);
+  text-align:center;
+  transition:border-color .15s ease;
+}
+.palette-swatch.active{border-color:var(--accent);}
+.palette-dots{
+  display:flex;
+  justify-content:center;
+  gap:4px;
+  margin-bottom:6px;
+}
+.palette-dots span{
+  width:14px;height:14px;
+  border-radius:50%;
+  display:inline-block;
+  box-shadow:0 0 0 1px rgba(0,0,0,0.08) inset;
+}
+.palette-name{font-size:11px; color:var(--card-ink-soft);}
+
+.custom-color-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:9px 4px;
+  font-size:13px;
+}
+.custom-color-row input[type=color]{
+  width:34px;height:34px;
+  border:none;
+  border-radius:50%;
+  padding:0;
+  cursor:pointer;
+  background:none;
+}
+.custom-color-row input[type=color]::-webkit-color-swatch-wrapper{padding:0;border-radius:50%;overflow:hidden;}
+.custom-color-row input[type=color]::-webkit-color-swatch{border:2px solid color-mix(in srgb, var(--card-ink) 16%, transparent);border-radius:50%;}
+
+/* -------- 초대/설정 버튼 위치 -------- */
+.back-btn{display:none;}
 
 @media (max-width:720px){
   .sidebar{position:fixed;inset:0;z-index:20;width:100%;transform:translateX(0);}
@@ -401,4 +518,3 @@ body{
   .chat-pane{width:100%;}
   .back-btn{display:inline-flex !important;}
 }
-.back-btn{display:none;}
