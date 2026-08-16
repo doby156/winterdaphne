@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>주파수 · 채팅</title>
 <link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
 </head>
 <body>
 
@@ -18,10 +19,13 @@
         <div class="me-row">
           <span class="pulse-dot"></span>
           <span id="meNickname"></span>
-          <span id="meUsername" style="color:var(--ink-soft)"></span>
+          <span id="meUsername" style="color:var(--card-ink-soft)"></span>
         </div>
       </div>
-      <button class="icon-btn" id="inviteBtn" title="새 대화 시작">＋</button>
+      <div class="header-actions">
+        <button class="icon-btn" id="themeBtn" title="테마 설정">🎨</button>
+        <button class="icon-btn" id="inviteBtn" title="새 대화 시작">＋</button>
+      </div>
     </div>
 
     <div class="room-list" id="roomList">
@@ -73,6 +77,49 @@
     <div class="modal-actions">
       <button class="btn-secondary" id="cancelInvite">취소</button>
       <button class="btn-primary" id="confirmInvite">대화 시작</button>
+    </div>
+  </div>
+</div>
+
+<!-- 테마 설정 모달 -->
+<div class="modal-backdrop hidden" id="themeModal">
+  <div class="modal">
+    <h3 class="brand">🎨 테마 설정</h3>
+    <p>배경, 카드, 포인트 색을 원하는 대로 바꿔보세요.</p>
+
+    <div class="theme-section">
+      <div class="dark-toggle-row">
+        <span>다크 모드</span>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="switch-track"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-section-label">프리셋</div>
+      <div class="palette-grid" id="paletteGrid"></div>
+    </div>
+
+    <div class="theme-section">
+      <div class="theme-section-label">직접 고르기</div>
+      <div class="custom-color-row">
+        <span>배경색</span>
+        <input type="color" id="customBgColor">
+      </div>
+      <div class="custom-color-row">
+        <span>카드색</span>
+        <input type="color" id="customPanelColor">
+      </div>
+      <div class="custom-color-row">
+        <span>포인트색</span>
+        <input type="color" id="customAccentColor">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary" id="closeTheme" style="margin-top:0;">완료</button>
     </div>
   </div>
 </div>
