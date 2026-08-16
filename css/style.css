@@ -199,6 +199,12 @@ body{
   flex-shrink:0;
 }
 .icon-btn:hover{background:var(--tint-2);}
+.icon-btn.theme-swatch{
+  background:var(--accent);
+  border:2px solid var(--card);
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--card-ink) 20%, transparent);
+}
+.icon-btn.theme-swatch:hover{background:var(--accent);opacity:0.85;}
 
 .room-list{
   flex:1;
