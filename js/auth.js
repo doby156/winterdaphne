@@ -37,6 +37,7 @@ document.getElementById('signupBtn').addEventListener('click', async () => {
   hideError(signupError);
   const username = document.getElementById('signupUsername').value.trim();
   const nickname = document.getElementById('signupNickname').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
   const password = document.getElementById('signupPassword').value;
 
   if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
@@ -45,6 +46,13 @@ document.getElementById('signupBtn').addEventListener('click', async () => {
   }
   if (!nickname) {
     showError(signupError, '닉네임을 입력해주세요.');
+    return;
+  }
+  // 이메일은 선택 입력이지만, 입력했다면 형식은 확인합니다.
+  // 참고: 이 이메일은 단순 프로필 정보로만 저장되며, 로그인/비밀번호 찾기에는 쓰이지 않아요
+  // (로그인은 계속 아이디 기반 가짜 이메일(usernameToEmail)로 처리됩니다).
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError(signupError, '이메일 형식이 올바르지 않아요.');
     return;
   }
   if (password.length < 6) {
@@ -78,7 +86,10 @@ document.getElementById('signupBtn').addEventListener('click', async () => {
       username: usernameKey,
       displayUsername: username,
       nickname: nickname,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      email: email || null,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastLoginAt: firebase.firestore.FieldValue.serverTimestamp(),
+      loginHistory: [{ at: new Date().toISOString() }]
     });
     await db.collection('usernames').doc(usernameKey).set({ uid: uid });
 
@@ -111,7 +122,18 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
   btn.textContent = '로그인 중...';
 
   try {
-    await auth.signInWithEmailAndPassword(usernameToEmail(username), password);
+    const cred = await auth.signInWithEmailAndPassword(usernameToEmail(username), password);
+    // 로그인 기록 저장 (관리자 화면에서 확인용). 실패해도 로그인 자체는 막지 않습니다.
+    try {
+      const uid = cred.user.uid;
+      const entry = { at: new Date().toISOString() };
+      await db.collection('users').doc(uid).update({
+        lastLoginAt: firebase.firestore.FieldValue.serverTimestamp(),
+        loginHistory: firebase.firestore.FieldValue.arrayUnion(entry)
+      });
+    } catch (logErr) {
+      console.error('로그인 기록 저장 실패(무시):', logErr);
+    }
     window.location.href = 'chat.html';
   } catch (err) {
     console.error(err);
