@@ -174,17 +174,16 @@ document.getElementById('confirmInvite').addEventListener('click', async () => {
   btn.textContent = '찾는 중...';
 
   try {
-    const unameDoc = await db.collection('usernames').doc(target).get();
-    if (!unameDoc.exists) {
+    const userQuery = await db.collection('users').where('username', '==', target).limit(1).get();
+    if (userQuery.empty) {
       inviteErrorEl.textContent = '해당 아이디의 사용자를 찾을 수 없어요.';
       inviteErrorEl.style.display = 'block';
       btn.disabled = false;
       btn.textContent = '대화 시작';
       return;
     }
-    const otherUid = unameDoc.data().uid;
-    const otherUserDoc = await db.collection('users').doc(otherUid).get();
-    const otherData = otherUserDoc.data();
+    const otherUid = userQuery.docs[0].id;
+    const otherData = userQuery.docs[0].data();
 
     // 이미 존재하는 1:1 방이 있는지 확인
     const existingRooms = await db.collection('rooms')
