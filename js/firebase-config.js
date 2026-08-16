@@ -12,6 +12,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+// 사진 전송(Storage)과 푸시 알림(Messaging)은 해당 SDK가 페이지에 로드되어 있을 때만 사용합니다.
+const storage = (typeof firebase.storage === 'function') ? firebase.storage() : null;
 
 // 아이디(문자) 로그인을 이메일 기반인 Firebase Auth 위에서 쓰기 위한 변환 규칙.
 // 예: 아이디가 "minsu"면 내부적으로 "minsu@chatapp.local" 이라는 가짜 이메일로 가입/로그인합니다.
